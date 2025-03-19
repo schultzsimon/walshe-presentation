@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <!-- Remaining HTML content from previous file -->
+    <!-- Remaining HTML content (sections, etc.) -->
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -62,32 +62,35 @@
             function updateNavDots() {
                 const scrollPosition = window.scrollY + window.innerHeight / 2;
                 
-                // Compute offsets for all sections
-                const sectionOffsets = Array.from(sections).map(section => ({
-                    element: section,
-                    top: section.offsetTop,
-                    bottom: section.offsetTop + section.clientHeight,
-                    id: section.getAttribute('id')
-                }));
+                // Find the section closest to the current scroll position
+                let closestSection = null;
+                let minDistance = Infinity;
                 
-                // Find the section that contains the current scroll position
-                const activeSection = sectionOffsets.find(section => 
-                    scrollPosition >= section.top && 
-                    scrollPosition <= section.bottom
-                );
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    const sectionMiddle = sectionTop + sectionHeight / 2;
+                    
+                    // Calculate distance from scroll position to section middle
+                    const distance = Math.abs(scrollPosition - sectionMiddle);
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestSection = section;
+                    }
+                });
                 
                 // Remove active class from all dots
                 navDots.forEach(dot => dot.classList.remove('active'));
                 
-                // Add active class to the corresponding dot
-                if (activeSection) {
-                    const activeNavDot = document.querySelector(`.nav-dot[data-slide="${activeSection.id}"]`);
+                // Add active class to the dot of the closest section
+                if (closestSection) {
+                    const sectionId = closestSection.getAttribute('id');
+                    const activeNavDot = document.querySelector(`.nav-dot[data-slide="${sectionId}"]`);
+                    
                     if (activeNavDot) {
                         activeNavDot.classList.add('active');
                     }
-                } else {
-                    // If no section is found, activate the first dot
-                    navDots[0].classList.add('active');
                 }
             }
             
@@ -109,14 +112,6 @@
                         behavior: 'smooth'
                     });
                 });
-            });
-            
-            // Mobile menu toggle
-            const menuToggle = document.getElementById('menu-toggle');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            menuToggle.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
             });
         });
     </script>
