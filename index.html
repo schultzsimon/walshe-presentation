@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jennifer Walshe and The New Discipline</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f8f9fa;
+        }
+        .slide {
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .slide-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .nav-dot {
+            transition: all 0.3s ease;
+        }
+        .nav-dot.active {
+            background-color: #3b82f6;
+            transform: scale(1.5);
+        }
+        blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            font-style: italic;
+            margin: 1.5rem 0;
+        }
+        .annotation {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.25rem;
+            height: 1rem;
+            width: 1rem;
+            background-color: #3b82f6;
+            border-radius: 50%;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 1.25rem;
+            bottom: -2rem;
+            width: 2px;
+            background-color: #e5e7eb;
+        }
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+        .modal-content {
+            margin: 5% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            background-color: #fff;
+            border-radius: 0.5rem;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Dots -->
+    <div class="fixed top-1/2 right-8 transform -translate-y-1/2 z-50 hidden md:block">
+        <div class="flex flex-col space-y-4">
+            <a href="#intro" class="nav-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-500 transition-all" data-slide="intro"></a>
+            <a href="#new-discipline" class="nav-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-500 transition-all" data-slide="new-discipline"></a>
+            <a href="#walshe" class="nav-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-500 transition-all" data-slide="walshe"></a>
+            <a href="#ergomimesis" class="nav-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-500 transition-all" data-slide="ergomimesis"></a>
+            <a href="#historical" class="nav-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-500 transition-all" data-slide="historical"></a>
+            <a href="#walshe-ai" class="nav-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-500 transition-all" data-slide="walshe-ai"></a>
+            <a href="#my-practice" class="nav-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-500 transition-all" data-slide="my-practice"></a>
+            <a href="#connections" class="nav-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-500 transition-all" data-slide="connections"></a>
+            <a href="#conclusion" class="nav-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-500 transition-all" data-slide="conclusion"></a>
+            <a href="#bibliography" class="nav-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-500 transition-all" data-slide="bibliography"></a>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 right-0 bg-white bg-opacity-90 shadow-md z-40">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-lg font-bold text-blue-600">
+                Jennifer Walshe and The New Discipline
+            </h1>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#intro" class="text-sm text-gray-600 hover:text-blue-600 transition">Introduction</a></li>
+                    <li><a href="#new-discipline" class="text-sm text-gray-600 hover:text-blue-600 transition">The New Discipline</a></li>
+                    <li><a href="#walshe-ai" class="text-sm text-gray-600 hover:text-blue-600 transition">Walshe & AI</a></li>
+                    <li><a href="#my-practice" class="text-sm text-gray-600 hover:text-blue-600 transition">My Practice</a></li>
+                    <li><a href="#conclusion" class="text-sm text-gray-600 hover:text-blue-600 transition">Conclusion</a></li>
+                </ul>
+            </nav>
+            <button class="md:hidden text-gray-600" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white w-full">
+            <ul class="px-4 py-2">
+                <li><a href="#intro" class="block py-2 text-gray-600 hover:text-blue-600 transition">Introduction</a></li>
+                <li><a href="#new-discipline" class="block py-2 text-gray-600 hover:text-blue-600 transition">The New Discipline</a></li>
+                <li><a href="#walshe-ai" class="block py-2 text-gray-600 hover:text-blue-600 transition">Walshe & AI</a></li>
+                <li><a href="#my-practice" class="block py-2 text-gray-600 hover:text-blue-600 transition">My Practice</a></li>
+                <li><a href="#conclusion" class="block py-2 text-gray-600 hover:text-blue-600 transition">Conclusion</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Introduction Slide -->
+    <section id="intro" class="slide bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div class="slide-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-blue-900 mb-6">Jennifer Walshe and <span class="text-indigo-600">The New Discipline</span></h1>
+                    <h2 class="text-xl md:text-2xl text-gray-700 mb-8">Flexible Mindsets in Interdisciplinary Art</h2>
+                    <p class="text-gray-600 mb-6">Exploring the intersection of performance, composition, and technology through the lens of Jennifer Walshe's artistic practice.</p>
+                    <p class="text-gray-500">Simon Schultz | University Presentation | 2025</p>
+                </div>
+                <div class="rounded-lg overflow-hidden shadow-xl">
+                    <img src="https://via.placeholder.com/600x400?text=Jennifer+Walshe" alt="Jennifer Walshe performing" class="w-full h-auto">
+                    <p class="annotation p-3 bg-white">Jennifer Walshe during a performance. Photo credit would be cited here.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The New Discipline Slide -->
+    <section id="new-discipline" class="slide bg-white">
+        <div class="slide-content">
+            <h2 class="text-3xl md:text-4xl font-bold text-blue-900 mb-6">The New Discipline</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-2">
+                    <blockquote class="text-lg md:text-xl text-gray-700 mb-6">
+                        "The New Discipline is a term I've adopted to describe compositional work which is aware of the inherent musical qualities and information in all the semiotic channels of the performers' physical and mental presence and their physical and mental interaction with things."
+                        <footer class="text-gray-500">— Jennifer Walshe, 2016</footer>
+                    </blockquote>
+                    <p class="mb-4">In her seminal text, Walshe articulates a framework for understanding composition that extends beyond traditional musical notation to encompass the totality of performance:</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 mb-6">
+                        <li>Integration of physical theater, choreography, and visual elements</li>
+                        <li>Recognition of the body as an instrument with its own history and vocabulary</li>
+                        <li>Acknowledgment of the performer's entire physical and mental presence</li>
+                        <li>Treating composition as a holistic practice that transcends disciplinary boundaries</li>
+                        <li>Emphasis on flexibility and adaptability across different media and contexts</li>
+                    </ul>
+                    <p>The New Discipline represents a significant shift from traditional composition, requiring practitioners to develop a flexible mindset capable of navigating multiple artistic domains simultaneously.</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-blue-50 p-6 rounded-lg shadow">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-3">Key Concepts</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">→</span>
+                                <span>Interdisciplinarity as inherent to contemporary composition</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">→</span>
+                                <span>Fluidity between composer, performer, and audience roles</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">→</span>
+                                <span>Recognition of multiple semiotic channels in performance</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">→</span>
+                                <span>Embracing technology as integral to artistic practice</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-indigo-50 p-6 rounded-lg shadow">
+                        <h3 class="text-xl font-semibold text-indigo-800 mb-3">Historical Context</h3>
+                        <p class="text-gray-700">The New Discipline emerges from a lineage that includes:</p>
+                        <ul class="space-y-1 mt-2">
+                            <li>- Fluxus movement</li>
+                            <li>- John Cage's explorations</li>
+                            <li>- Performance art traditions</li>
+                            <li>- Expanded cinema practices</li>
+                            <li>- Digital and internet art</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Script for navigation and interactions -->
+    <script>
+        // Navigation dots highlighting
+        const sections = document.querySelectorAll('.slide');
+        const navDots = document.querySelectorAll('.nav-dot');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (scrollY >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-slide') === current) {
+                    dot.classList.add('active');
+                }
+            });
+        });
+        
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+        
+        // Close modal when clicking outside content
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
