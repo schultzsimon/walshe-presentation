@@ -59,35 +59,37 @@
             const sections = document.querySelectorAll('.slide');
             const navDots = document.querySelectorAll('.nav-dot');
             
-            // Improved scroll event listener
-            window.addEventListener('scroll', () => {
-                let current = '';
-                const viewportHeight = window.innerHeight;
+            function updateNavDots() {
+                const scrollPosition = window.scrollY + window.innerHeight / 2;
                 
                 sections.forEach(section => {
                     const sectionTop = section.offsetTop;
                     const sectionHeight = section.clientHeight;
-                    const scrollPosition = window.scrollY + viewportHeight / 2;
+                    const sectionId = section.getAttribute('id');
                     
-                    // Check if section is more than 50% in view
                     if (
                         scrollPosition >= sectionTop && 
                         scrollPosition < (sectionTop + sectionHeight)
                     ) {
-                        current = section.getAttribute('id');
+                        // Remove active class from all dots
+                        navDots.forEach(dot => dot.classList.remove('active'));
+                        
+                        // Add active class to the corresponding dot
+                        const activeNavDot = document.querySelector(`.nav-dot[data-slide="${sectionId}"]`);
+                        if (activeNavDot) {
+                            activeNavDot.classList.add('active');
+                        }
                     }
                 });
-                
-                // Update navigation dots
-                navDots.forEach(dot => {
-                    dot.classList.remove('active');
-                    if (dot.getAttribute('data-slide') === current) {
-                        dot.classList.add('active');
-                    }
-                });
-            });
-
-            // Add click event to navigation dots for smoother scrolling
+            }
+            
+            // Initial dot highlighting
+            updateNavDots();
+            
+            // Update on scroll
+            window.addEventListener('scroll', updateNavDots);
+            
+            // Smooth scrolling for navigation dots
             navDots.forEach(dot => {
                 dot.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -99,11 +101,6 @@
                     });
                 });
             });
-
-            // Highlight first dot by default when page loads
-            if (navDots.length > 0) {
-                navDots[0].classList.add('active');
-            }
             
             // Mobile menu toggle
             const menuToggle = document.getElementById('menu-toggle');
