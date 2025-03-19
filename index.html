@@ -62,32 +62,43 @@
             function updateNavDots() {
                 const scrollPosition = window.scrollY + window.innerHeight / 2;
                 
+                // Keep track of the closest section
+                let closestSection = null;
+                let minDistance = Infinity;
+                
                 sections.forEach(section => {
                     const sectionTop = section.offsetTop;
                     const sectionHeight = section.clientHeight;
-                    const sectionId = section.getAttribute('id');
                     
-                    if (
-                        scrollPosition >= sectionTop && 
-                        scrollPosition < (sectionTop + sectionHeight)
-                    ) {
-                        // Remove active class from all dots
-                        navDots.forEach(dot => dot.classList.remove('active'));
-                        
-                        // Add active class to the corresponding dot
-                        const activeNavDot = document.querySelector(`.nav-dot[data-slide="${sectionId}"]`);
-                        if (activeNavDot) {
-                            activeNavDot.classList.add('active');
-                        }
+                    // Calculate the distance from the current scroll position to the section
+                    const distance = Math.abs(scrollPosition - (sectionTop + sectionHeight / 2));
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestSection = section;
                     }
                 });
+                
+                // Remove active class from all dots
+                navDots.forEach(dot => dot.classList.remove('active'));
+                
+                // If we found a closest section, activate its corresponding dot
+                if (closestSection) {
+                    const sectionId = closestSection.getAttribute('id');
+                    const activeNavDot = document.querySelector(`.nav-dot[data-slide="${sectionId}"]`);
+                    
+                    if (activeNavDot) {
+                        activeNavDot.classList.add('active');
+                    }
+                }
             }
             
             // Initial dot highlighting
             updateNavDots();
             
-            // Update on scroll
+            // Update on scroll and resize (to handle different viewport sizes)
             window.addEventListener('scroll', updateNavDots);
+            window.addEventListener('resize', updateNavDots);
             
             // Smooth scrolling for navigation dots
             navDots.forEach(dot => {
