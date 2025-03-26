@@ -2,7 +2,31 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize navigation and interactions
     initializeNavigation();
+    
+    // Ensure we start at the intro section if no specific anchor is provided
+    ensureCorrectStartingSection();
 });
+
+function ensureCorrectStartingSection() {
+    // If no specific hash or if it's just "#" without a specific section
+    if (!window.location.hash || window.location.hash === '#') {
+        // Scroll to intro section
+        const introSection = document.getElementById('intro');
+        if (introSection) {
+            introSection.scrollIntoView({ behavior: 'smooth' });
+            
+            // Update the URL to reflect we're at the intro section
+            history.replaceState(null, null, '#intro');
+            
+            // Highlight the first nav dot
+            const firstDot = document.querySelector('.nav-dot[data-slide="intro"]');
+            if (firstDot) {
+                document.querySelectorAll('.nav-dot').forEach(dot => dot.classList.remove('active'));
+                firstDot.classList.add('active');
+            }
+        }
+    }
+}
 
 function initializeNavigation() {
     const sections = document.querySelectorAll('.slide');
